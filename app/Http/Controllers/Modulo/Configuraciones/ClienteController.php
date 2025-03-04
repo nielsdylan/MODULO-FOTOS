@@ -30,10 +30,10 @@ class ClienteController extends Controller
             })->addColumn('accion', function ($data) {
                 return
                 '<div class="flex align-items-center list-user-action" >
-                    <a href="#" class="btn btn-icon btn-sm ver"  data-id="' . $data->user_id . '" ><i class="fa fa-eye"></i></a>
-                    <a href="#" class="btn btn-icon btn-sm editar"  data-id="' . $data->user_id . '" ><i class="fa fa-pencil"></i>
+                    <a href="#" class="btn btn-icon btn-sm ver text-dark"  data-id="' . $data->user_id . '" ><i class="fa fa-eye"></i></a>
+                    <a href="#" class="btn btn-icon btn-sm editar text-dark"  data-id="' . $data->user_id . '" ><i class="fa fa-pencil"></i>
                     </a>
-                    <a href="#" class="btn btn-icon btn-sm eliminar"  data-id="' . $data->user_id . '" ><i class="fa fa-trash"></i>
+                    <a href="#" class="btn btn-icon btn-sm eliminar text-dark"  data-id="' . $data->user_id . '" ><i class="fa fa-trash"></i>
                     </a>
 
                 </div>';

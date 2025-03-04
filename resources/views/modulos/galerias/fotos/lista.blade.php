@@ -14,6 +14,14 @@
         inset-inline-start: auto !important;
         float: left;
     }
+
+    .img-carousels{
+        background-size: contain !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        height: 150px;
+        margin-top: 20px;
+    }
 </style>
 @endsection
 
@@ -146,11 +154,30 @@
                                                     {{-- tabla 5 --}}
                                                     <ul id="lightgallery" class="list-unstyled row">
                                                         @foreach ($galeria as $item)
-                                                        <li class="col-xs-6 col-sm-4 col-md-4 col-xl-3 mb-5 border-bottom-0" data-responsive="{{ asset('').$item->path }}" data-src="{{ asset('').$item->path }}" data-sub-html="<h4>{{$item->titulo}}</h4><p> {{$item->description}}</p>">
-                                                            <a href="javascript:void(0)">
-                                                                <img class="img-responsive br-5" src="{{ asset('').$item->path }}" alt="Thumb-1">
-                                                            </a>
-                                                        </li>
+                                                        @if ($item->extension != 'mp4')
+                                                            <li class="col-xs-6 col-sm-4 col-md-4 col-xl-3 mb-5 border-bottom-0"
+                                                            data-responsive="{{ asset('').$item->path }}"
+                                                            data-src="{{ asset('').$item->path }}"
+                                                            data-sub-html="<h4>{{$item->titulo}}</h4><p> {{$item->description}}</p>">
+                                                                <a href="javascript:void(0)">
+                                                                    <img class="img-responsive br-5" src="{{ asset('').$item->path }}" alt="Thumb-1">
+                                                                </a>
+                                                            </li>
+                                                        @else
+                                                            <li class="col-xs-6 col-sm-4 col-md-4 col-xl-3 mb-5 border-bottom-0"
+                                                            data-responsive="{{ asset('').$item->path }}"
+                                                            data-src="{{ asset('').$item->path }}"
+                                                            data-sub-html="<h4>{{$item->titulo}}</h4><p> {{$item->description}}</p>"
+                                                                data-iframe="true"
+                                                                >
+                                                                <a href="javascript:void(0)">
+                                                                    <video width="300" height="150" controls>
+                                                                        <source src="{{ asset('').$item->path }}" type="video/mp4">
+                                                                        Tu navegador no soporta la reproducción de video.
+                                                                    </video>
+                                                                </a>
+                                                            </li>
+                                                        @endif
                                                         @endforeach
 
                                                     </ul>
@@ -158,60 +185,42 @@
                                                 <div class="tab-pane" id="tab6">
                                                     {{-- tab 6 --}}
                                                     <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div id="carousel-captions" class="carousel slide" data-bs-ride="carousel">
-                                                                <div class="carousel-inner">
-                                                                    @foreach ($galeria as $key=>$item)
-                                                                        <div class="carousel-item {{ $key == 0 ? 'active':''}}">
-                                                                            <div class="pt-3" style="
-                                                                                background: url('{{ asset('').$item->path }}');
-                                                                                background-size: contain;
-                                                                                background-position: center;
-                                                                                background-repeat: no-repeat;
-                                                                                height: 150px;
-                                                                                margin-top: 20px;" data-bs-holder-rendered="true">
+                                                        @foreach ($albumes as $key=>$value)
 
-                                                                            </div>
-
-                                                                            {{-- <img class="d-block  br-5" alt="" src="{{ asset('').$item->path }}" data-bs-holder-rendered="true"> --}}
-                                                                            <div class="carousel-item-background d-none d-md-block"></div>
-                                                                            <div class="carousel-caption d-none d-md-block">
-                                                                                <h3>{{$item->titulo}}</h3>
-                                                                                <p>{{$item->description}}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-
-                                                                <a class="carousel-control-prev" href="#carousel-captions" role="button" data-bs-slide="prev">
-                                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                    <span class="sr-only">Previous</span>
-                                                                </a>
-                                                                <a class="carousel-control-next" href="#carousel-captions" role="button" data-bs-slide="next">
-                                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                    <span class="sr-only">Next</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        @foreach ($galeria as $key=>$item)
                                                             <div class="col-md-4">
-                                                                <div class="border mb-5 p-4 br-5">
-                                                                    <div class="pt-3" style="
-                                                                        background: url('{{ asset('').$item->path }}');
-                                                                        background-size: contain;
-                                                                        background-position: center;
-                                                                        background-repeat: no-repeat;
-                                                                        height: 150px;
-                                                                        margin-top: 20px;">
+                                                                <div id="carousel-captions" class="carousel slide" data-bs-ride="carousel">
+                                                                    <div class="carousel-inner">
+                                                                        @foreach ($value->imagenes as $key_img=>$item)
+                                                                            <div class="carousel-item {{ $key_img == 0 ? 'active':''}}">
+                                                                                @if ($item->extension != 'mp4')
+                                                                                <div class="pb-0 mt-0 img-carousels" style="
+                                                                                    background: url('{{ asset('').$item->path }}');
+                                                                                    " data-bs-holder-rendered="true">
 
+                                                                                </div>
+                                                                                @else
+                                                                                <video class="pb-0 mt-0 img-carousels" autoplay muted loop>
+                                                                                    <source src="{{ asset('').$item->path }}" type="video/mp4">
+                                                                                    Tu navegador no soporta videos.
+                                                                                </video>
+                                                                                @endif
+                                                                                @if ($key_img == 0)
+                                                                                <div class="carousel-item-background d-none d-md-block"></div>
+                                                                                <div class="carousel-caption d-none d-md-block">
+                                                                                    <h3>{{$value->titulo}}</h3>
+                                                                                    <p>{{$value->description}}</p>
+                                                                                </div>
+                                                                                @endif
+
+                                                                            </div>
+                                                                        @endforeach
                                                                     </div>
+
                                                                 </div>
                                                             </div>
                                                         @endforeach
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>

@@ -13,8 +13,12 @@ class FotosController extends Controller
     //
     public function lista(){
         $albumes = Album::where('usuario_id', Auth::user()->id)->get();
-
+        foreach ($albumes as $key => $value) {
+            $value->imagenes = $value->imagenes;
+        }
+        // return $albumes;
         $galeria = Image::where('user_id',Auth::user()->id)->get();
+
         return view('modulos.galerias.fotos.lista', get_defined_vars());
     }
 
@@ -40,9 +44,9 @@ class FotosController extends Controller
 
                 $imageName  = time(). '_' . uniqid().'.' . $value->extension();
                 $name       = $value->getClientOriginalName();
-                $weight     = $value->getSize();
+                $weight     = $value->getSize(); // tamaño en bytes
                 $extencion  = $value->extension();
-                $path       = 'images/'.Auth::user()->id . '/'.$imageName;
+                $path       = 'images/'.Auth::user()->id . '/'.$imageName; // ($weight / 1024) formula para convertir de bytes a KB
                 $value->move(public_path('images/'.Auth::user()->id), $imageName);
 
                 $save = new Image();
